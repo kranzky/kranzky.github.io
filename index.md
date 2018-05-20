@@ -1,5 +1,5 @@
 ---
-title: Diary of Kranzky
+title: Deep Kranzky
 ---
 
 {% for post in site.posts reversed %}
