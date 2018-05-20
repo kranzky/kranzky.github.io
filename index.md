@@ -2,9 +2,7 @@
 title: Diary of Kranzky
 ---
 
-## test
-
 {% for post in site.posts reversed %}
-  [{{ post.title }}]({{ post.url }})
-  {{ post.excerpt }}
+  [{{ post.date | date "%Y-%m-%d" }}]({{ post.url }})
+  {{ post.content }}
 {% endfor %}
