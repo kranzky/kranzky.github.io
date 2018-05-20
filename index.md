@@ -3,5 +3,6 @@ title: Diary of Kranzky
 ---
 
 {% for post in site.posts %}
-  ## {{ post.date }}
+  ## [{{ post.date }}a]({{ post.url}})
+  {{ post.body }}
 {% endfor %}
