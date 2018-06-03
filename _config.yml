@@ -1,5 +1,7 @@
 theme: jekyll-theme-hacker
 permalink: /:categories/:year/:month/:day
 title: Deep Kranzky
+paginate: 7
 plugins:
   - jekyll-feed
+  - jekyll-paginate

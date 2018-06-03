@@ -1,8 +1,10 @@
 desc "Create today's post"
 task :post do
   require 'date'
-  name = File.join('_posts', Date.today.strftime + "-post.md")
+  require 'fileutils'
+  name = File.join('_posts', Date.today.year.to_s, "%02d" % Date.today.month, Date.today.strftime + "-post.md")
   unless File.exist?(name)
+    mkdir_p(File.dirname(name))
     content = "---\nlayout: post\n---\n\nTBD.\n"
     File.open(name, "w") { |file| file << content }
   end
