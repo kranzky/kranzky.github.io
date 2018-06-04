@@ -21,7 +21,7 @@ desc "Publish everything"
 task :push do
   files = `git diff --name-only --cached`.split
   if files.count > 0
-    count = Dir["_posts/*.md"].count
+    count = Dir["_posts/**/*.md"].count
     sh "git commit -m #{count}"
     sh "git push"
   else
