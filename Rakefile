@@ -13,12 +13,12 @@ task :post do
 end
 
 desc "Eyeball the blog locally"
-task :test do
+task :view do
   sh "jekyll serve --open-url"
 end
 
 desc "Publish everything"
-task :push do
+task :publish do
   files = `git diff --name-only --cached`.split
   if files.count > 0
     count = Dir["_posts/**/*.md"].count
@@ -29,7 +29,7 @@ task :push do
   end
 end
 
-task default: :test
+task default: :view
 
 task :help do
   sh "rake -T"
