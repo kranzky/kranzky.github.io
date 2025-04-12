@@ -29,6 +29,11 @@ task :publish do
   end
 end
 
+desc "Generate Markdown versions of all pages"
+task :markdown do
+  sh "bundle exec jekyll build && ruby html_to_markdown.rb"
+end
+
 task default: :view
 
 task :help do
