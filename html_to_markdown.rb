@@ -12,6 +12,7 @@ site_dir = File.join(Dir.pwd, '_site')
 Dir.glob(File.join(site_dir, "**", "*.html")).each do |html_file|
   # Create corresponding markdown filename
   md_file = html_file.sub(/\.html$/, '.md')
+  md_file = md_file.sub("_site", "../mmm/diary")
   
   puts "Processing: #{html_file}"
   
@@ -46,7 +47,13 @@ Dir.glob(File.join(site_dir, "**", "*.html")).each do |html_file|
                       .gsub(/<header>.*?<\/header>/m, '') # Remove header tags and content
                       .gsub(/<\/?[a-z][^>]*>/i, '')   # Remove any remaining HTML tags
                       .gsub(/\n\s*\n\s*\n/, "\n\n")   # Normalize multiple newlines
-    
+                      .gsub("…", "...")
+                      .gsub("’", "'")
+                      .gsub("“", '"') 
+                      .gsub("”", '"') # Replace special characters
+                      .gsub("](/", "](/diary/") # Replace relative links
+                      .gsub(%r{(/diary/\d{4}/\d{2}/\d{2})}, '\1.md')
+
     # Add front matter if the HTML contains it
     front_matter = ""
     if html_content =~ /---(.+?)---/m
@@ -83,7 +90,19 @@ Dir.glob(File.join(site_dir, "**", "*.html")).each do |html_file|
                         .gsub(/<header>.*?<\/header>/m, '') # Remove header tags and content
                         .gsub(/<\/?[a-z][^>]*>/i, '')   # Remove any remaining HTML tags
                         .gsub(/\n\s*\n\s*\n/, "\n\n")   # Normalize multiple newlines
+                        .gsub("…", "...")
+                        .gsub("’", "'")
+                        .gsub("“", '"') 
+                        .gsub("”", '"') # Replace special characters
+                        .gsub("](/", "](/diary/") # Replace relative links
+                        .gsub(%r{(/diary/\d{4}/\d{2}/\d{2})}, '\1.md')
       
+      # Replace special characters
+      markdown = markdown.gsub("’" "'").gsub("“", '"').gsub("”", '"')
+
+      # Replace relative links
+      markdown = markdown.gsub("](/", "](")
+
       # Write Markdown file
       File.write(md_file, markdown.strip)
       puts "Created: #{md_file} (from body)"
