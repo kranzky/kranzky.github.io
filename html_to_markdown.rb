@@ -45,14 +45,19 @@ Dir.glob(File.join(site_dir, "**", "*.html")).each do |html_file|
                       .gsub(/<\/?span[^>]*>/, '')     # Remove span tags
                       .gsub(/<\/?section[^>]*>/, '')  # Remove section tags
                       .gsub(/<header>.*?<\/header>/m, '') # Remove header tags and content
-                      .gsub(/<\/?[a-z][^>]*>/i, '')   # Remove any remaining HTML tags
                       .gsub(/\n\s*\n\s*\n/, "\n\n")   # Normalize multiple newlines
                       .gsub("…", "...")
+                      .gsub("–", "-")
+                      .gsub("—", "-")
                       .gsub("’", "'")
                       .gsub("“", '"') 
                       .gsub("”", '"') # Replace special characters
                       .gsub("](/", "](/diary/") # Replace relative links
                       .gsub(%r{(/diary/\d{4}/\d{2}/\d{2})}, '\1.md')
+                      .gsub(/(?<![\s'"!])\[([^\]]+)\]\(([^)]+)\)(?![\s,.:;"'!?])/, ' \0 ')
+                      .gsub(/(?<=[\s'"!])\[([^\]]+)\]\(([^)]+)\)(?![\s,.:;"'!?])/, '\0 ')
+                      .gsub(/(?<![\s'"!])\[([^\]]+)\]\(([^)]+)\)(?=[\s,.:;"'!?])/, ' \0')
+
 
     # Add front matter if the HTML contains it
     front_matter = ""
@@ -88,21 +93,19 @@ Dir.glob(File.join(site_dir, "**", "*.html")).each do |html_file|
                         .gsub(/<\/?span[^>]*>/, '')     # Remove span tags
                         .gsub(/<\/?section[^>]*>/, '')  # Remove section tags
                         .gsub(/<header>.*?<\/header>/m, '') # Remove header tags and content
-                        .gsub(/<\/?[a-z][^>]*>/i, '')   # Remove any remaining HTML tags
                         .gsub(/\n\s*\n\s*\n/, "\n\n")   # Normalize multiple newlines
                         .gsub("…", "...")
+                        .gsub("–", "-")
+                        .gsub("—", "-")
                         .gsub("’", "'")
                         .gsub("“", '"') 
                         .gsub("”", '"') # Replace special characters
                         .gsub("](/", "](/diary/") # Replace relative links
                         .gsub(%r{(/diary/\d{4}/\d{2}/\d{2})}, '\1.md')
+                        .gsub(/(?<![\s'"!])\[([^\]]+)\]\(([^)]+)\)(?![\s,.:;"'!?])/, ' \0 ')
+                        .gsub(/(?<=[\s'"!])\[([^\]]+)\]\(([^)]+)\)(?![\s,.:;"'!?])/, '\0 ')
+                        .gsub(/(?<![\s'"!])\[([^\]]+)\]\(([^)]+)\)(?=[\s,.:;"'!?])/, ' \0')
       
-      # Replace special characters
-      markdown = markdown.gsub("’" "'").gsub("“", '"').gsub("”", '"')
-
-      # Replace relative links
-      markdown = markdown.gsub("](/", "](")
-
       # Write Markdown file
       File.write(md_file, markdown.strip)
       puts "Created: #{md_file} (from body)"
